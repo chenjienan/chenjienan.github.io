@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Introduction上个月参加了一场面试，其中问了一条system design的题目。面试前咨询了IT界资深大牛，他语重心长地建议我好好准备算法，系统设计可以胡扯一下。面试后深深觉得这种场景不能适用在我自己身上。 最近一直在思考一个问题：在下工作几年，又好好准备了2个月，为何还是有点无所适从的感觉？ 题目不算难，但确实缺少面试经验。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="System Design 系统设计小结">
+<meta property="og:url" content="http://yoursite.com/2019/03/06/design/System-Design-系统设计小结/index.html">
+<meta property="og:site_name" content="Terence">
+<meta property="og:description" content="Introduction上个月参加了一场面试，其中问了一条system design的题目。面试前咨询了IT界资深大牛，他语重心长地建议我好好准备算法，系统设计可以胡扯一下。面试后深深觉得这种场景不能适用在我自己身上。 最近一直在思考一个问题：在下工作几年，又好好准备了2个月，为何还是有点无所适从的感觉？ 题目不算难，但确实缺少面试经验。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-12-27T00:21:03.222Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="System Design 系统设计小结">
+<meta name="twitter:description" content="Introduction上个月参加了一场面试，其中问了一条system design的题目。面试前咨询了IT界资深大牛，他语重心长地建议我好好准备算法，系统设计可以胡扯一下。面试后深深觉得这种场景不能适用在我自己身上。 最近一直在思考一个问题：在下工作几年，又好好准备了2个月，为何还是有点无所适从的感觉？ 题目不算难，但确实缺少面试经验。">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/06/design/System-Design-系统设计小结/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>System Design 系统设计小结 | Terence</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Terence</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/06/design/System-Design-系统设计小结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Terence Chen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Terence">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">System Design 系统设计小结
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-03-06 16:39:05" itemprop="dateCreated datePublished" datetime="2019-03-06T16:39:05-08:00">2019-03-06</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-12-26 16:21:03" itemprop="dateModified" datetime="2020-12-26T16:21:03-08:00">2020-12-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/design/" itemprop="url" rel="index"><span itemprop="name">design</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article"></span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time"></span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>上个月参加了一场面试，其中问了一条system design的题目。面试前咨询了IT界资深大牛，他语重心长地建议我好好准备算法，系统设计可以胡扯一下。面试后深深觉得这种场景不能适用在我自己身上。</p>
+<p>最近一直在思考一个问题：在下工作几年，又好好准备了2个月，为何还是有点无所适从的感觉？ 题目不算难，但确实缺少面试经验。</p>
+<a id="more"></a>
+<h4 id="思考人生的结论："><a href="#思考人生的结论：" class="headerlink" title="思考人生的结论："></a>思考人生的结论：</h4><ol>
+<li>题目没有标准答案，解释一个架构时，面试官会有主观好坏的判断</li>
+<li>两个月的突击，知识只停留在背诵了解的层面上，还没有变成自己的东西。题目或需求改变就GG</li>
+<li>面试没有大局观，对某个部分的理解不够深入，心里没数</li>
+<li>设计经验不足，被面试官挤牙膏，十分影响结果</li>
+<li>有些设计（large scale）在工作当中不一定用得上，特别是小公司</li>
+</ol>
+<p>系统设计是一个长期经验积累的一个过程，面试加入这样一轮，主要考验candidate知识面的深度与广度，而不是仅仅是刷题达人。当然能成为刷题达人也是在下的一个目标。</p>
+<h3 id="Structure"><a href="#Structure" class="headerlink" title="Structure"></a>Structure</h3><p>综合众多培训机构和各种讲座的总结，在下得出如下结构：</p>
+<h4 id="Scenario"><a href="#Scenario" class="headerlink" title="Scenario"></a>Scenario</h4><ul>
+<li>用户量</li>
+<li>峰值</li>
+</ul>
+<p>依照以上两个数值推算出：</p>
+<ol>
+<li>QPS</li>
+<li>存储size (为后面的storage做铺垫)</li>
+<li>如果数据有关联，需要罗列出schema (数据之间的关系)</li>
+<li>必要的算法，或数据结构 (e.g. typeahead - trie, rate limiter - window)</li>
+</ol>
+<p>按照大众的评论，大概3-4个需求足以</p>
+<h4 id="Implementation-主要环节"><a href="#Implementation-主要环节" class="headerlink" title="Implementation (主要环节)"></a>Implementation (主要环节)</h4><ul>
+<li>标注，添加必要service （组件）</li>
+<li>重点：了解组件的功能，为什么需要这个组件</li>
+<li>重点：画图搭架 - 如何安排各个组件之间的联系(protocols, communications)</li>
+<li>考虑数据贮存</li>
+<li>考虑是否有model</li>
+<li>检查是否架构合理性(经验之谈)</li>
+</ul>
+<p>目标是解决Scenario 所罗列的需求。多看多积累是重中之重。建议把下面介绍的资料都了解一下。这里就不多说了。这次主要死在这个环节，没有把主要的架构搭建好，有些service的连接不make sense，导致后面准备得十分的scalability一点没有，显得整个面试苍白无力。</p>
+<h4 id="Enhancement"><a href="#Enhancement" class="headerlink" title="Enhancement"></a>Enhancement</h4><p>主要解决三大问题： </p>
+<ul>
+<li>maintainability</li>
+<li>flexibility</li>
+<li>scalability</li>
+</ul>
+<p>简单来说就是做优化，如果上一个环节没有做好，这个环节就没有很多意义。如果考背诵，无非就是service scale out多加几个nodes,再来个load balancer。NoSQL vs SQL, Database来个主从备份或者读写分离，加速就装Cache，再上consistent hashing或CP/AP model等等等等。</p>
+<h3 id="个人总结几大类系统："><a href="#个人总结几大类系统：" class="headerlink" title="个人总结几大类系统："></a>个人总结几大类系统：</h3><ul>
+<li><strong>location-sensitive</strong>：Yelp，Uber matching, find nearby friend</li>
+<li><strong>storage-based</strong>: Pastein, Dropbox</li>
+<li><strong>social network (timeline)</strong>: Facebook news feed, Twitter</li>
+<li><strong>search-based</strong>: typeahead, twitter search</li>
+<li><strong>notification/message queue</strong>: Web crawler, Mint.com</li>
+<li><strong>service-based</strong>: TicketMaster, YouTube/Netflex</li>
+<li><strong>chat-based</strong>: Facebook messenger, WhatsApp, Tinder</li>
+<li><strong>functional</strong>: TinyURL, Rate Limiter</li>
+</ul>
+<p>熟悉这几大类型，对搭架子会有很大帮助。大多系统架构都有相似的地方，因地制宜。</p>
+<h3 id="这里补充基础知识："><a href="#这里补充基础知识：" class="headerlink" title="这里补充基础知识："></a>这里补充基础知识：</h3><ul>
+<li><a href="https://github.com/donnemartin/system-design-primer" target="_blank" rel="noopener">system design premier</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLMCXHnjXnTnvo6alSjVkgxV-VH6EPyvoX" target="_blank" rel="noopener">YouTube印度小哥系列</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLkQkbY7JNJuBoTemzQfjym0sqbOHt5fnV" target="_blank" rel="noopener">YouTube黑哥系列</a></li>
+<li><a href="http://aosabook.org/en/index.html" target="_blank" rel="noopener">The Architecture of Open Source Applications</a></li>
+<li><a href="https://www.educative.io/collection/5668639101419520/5649050225344512" target="_blank" rel="noopener">Grokking the System Design Interview</a></li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在日后多看别人家的架构以及云端的各种服务和功能，多考虑不同的场景，不同的处理方式。(有点象在讲废话)</p>
+<p>有更多好的资源或者建议和意见，欢迎和我联系！</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/05/coding/Dynamic-Programming算法总结/" rel="next" title="Dynamic Programming算法总结">
+                <i class="fa fa-chevron-left"></i> Dynamic Programming算法总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/07/knowledge/Implementing-Cache-for-Cloud-based-Application/" rel="prev" title="Implementing Cache for Cloud-based Application">
+                Implementing Cache for Cloud-based Application <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Terence Chen</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#思考人生的结论："><span class="nav-number">1.1.</span> <span class="nav-text">思考人生的结论：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Structure"><span class="nav-number">2.</span> <span class="nav-text">Structure</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Scenario"><span class="nav-number">2.1.</span> <span class="nav-text">Scenario</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Implementation-主要环节"><span class="nav-number">2.2.</span> <span class="nav-text">Implementation (主要环节)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Enhancement"><span class="nav-number">2.3.</span> <span class="nav-text">Enhancement</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#个人总结几大类系统："><span class="nav-number">3.</span> <span class="nav-text">个人总结几大类系统：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#这里补充基础知识："><span class="nav-number">4.</span> <span class="nav-text">这里补充基础知识：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Terence Chen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="Symbols count total"></span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

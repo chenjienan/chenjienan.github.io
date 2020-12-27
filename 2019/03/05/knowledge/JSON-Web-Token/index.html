@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Explain JWT like I’m fiveScenario 1: (Not JWT)I’m at a restaurant and I order a beer. This particular restaurant takes age verification very seriously. So the waiter asks to see my license. I provide">
+<meta name="keywords" content="work">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JSON Web Token">
+<meta property="og:url" content="http://yoursite.com/2019/03/05/knowledge/JSON-Web-Token/index.html">
+<meta property="og:site_name" content="Terence">
+<meta property="og:description" content="Explain JWT like I’m fiveScenario 1: (Not JWT)I’m at a restaurant and I order a beer. This particular restaurant takes age verification very seriously. So the waiter asks to see my license. I provide">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-12-27T00:21:03.225Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JSON Web Token">
+<meta name="twitter:description" content="Explain JWT like I’m fiveScenario 1: (Not JWT)I’m at a restaurant and I order a beer. This particular restaurant takes age verification very seriously. So the waiter asks to see my license. I provide">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/05/knowledge/JSON-Web-Token/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>JSON Web Token | Terence</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Terence</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/05/knowledge/JSON-Web-Token/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Terence Chen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Terence">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JSON Web Token
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-03-05 11:37:44" itemprop="dateCreated datePublished" datetime="2019-03-05T11:37:44-08:00">2019-03-05</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-12-26 16:21:03" itemprop="dateModified" datetime="2020-12-26T16:21:03-08:00">2020-12-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article"></span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time"></span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Explain-JWT-like-I’m-five"><a href="#Explain-JWT-like-I’m-five" class="headerlink" title="Explain JWT like I’m five"></a>Explain JWT like I’m five</h1><h3 id="Scenario-1-Not-JWT"><a href="#Scenario-1-Not-JWT" class="headerlink" title="Scenario 1: (Not JWT)"></a>Scenario 1: (Not JWT)</h3><p>I’m at a restaurant and I order a beer. This particular restaurant takes age verification very seriously. So the waiter asks to see my license. I provide it, but then he goes and gets a phone. He calls the DMV, waits on hold for a bit, and asks them to verify the license details. Once he talks to the licensing authority and they confirm my date of birth, then he goes and gets my beer.<br><a id="more"></a><br>This is the old style of authentication, where you present your session cookie. When the server receives the session ID from the cookie, it turns around and calls the session service (or queries a database or memory) to find out if your ID is still good, and additional information that might be stored in that session.</p>
+<p>As you can see, this can become a bottleneck to service. And the restaurant probably won’t stay in business long.</p>
+<h3 id="Scenario-2-JWT"><a href="#Scenario-2-JWT" class="headerlink" title="Scenario 2: (JWT)"></a>Scenario 2: (JWT)</h3><p>I’m at a restaurant and I order a beer. This particular restaurant also takes age verification very seriously. The waiter asks to see my license, and I provide it. The waiter pulls out a UV light and inspects the watermark on my license. It checks out ok, so he hands the license back and gets my beer.</p>
+<p>In this case, the issuing authority of the license placed a special “seal” into the license that can be used to identify valid licenses. This means that verification can be performed without calling back to the DMV. The waiter has to know exactly what seal to look for. That might mean he has to go look up the state’s seal sometimes. Once the waiter determines that the license is valid, they can trust the Date of Birth information on it.</p>
+<p>This is the JWT variety of authentication. Once the DMV believes you are who you say (JWT version: autheticated, probably with password), it collects various data about you (JWT version: claims) and puts it on the license (JWT itself). When the license is issued, it is also watermarked with a seal (JWT version: digital signature) so that it can be examined for validity by people who know what to look for (JWT version: your API validates the JWT signature with a shared key). After that, the license (JWT) is trusted and the Date of Birth (claim) is assumed to be true.</p>
+<ul>
+<li><a href="https://jwt.io/" target="_blank" rel="noopener">Home page</a></li>
+<li><a href="https://jwt.io/introduction/" target="_blank" rel="noopener">Intro to JWT</a></li>
+<li><a href="https://www.nuget.org/packages/System.IdentityModel.Tokens.Jwt/" target="_blank" rel="noopener">NuGet package for .NET</a></li>
+<li><a href="https://github.com/auth0/angular2-jwt" target="_blank" rel="noopener">Angular package</a></li>
+</ul>
+<h1 id="backend-C-implementation"><a href="#backend-C-implementation" class="headerlink" title="backend C#　implementation:"></a>backend C#　implementation:</h1><h3 id="Static-jwt-manager"><a href="#Static-jwt-manager" class="headerlink" title="Static jwt manager"></a>Static jwt manager</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">// Static jwt manager</span><br><span class="line">// 3 methods</span><br><span class="line">public static class JwtManager</span><br><span class="line">    &#123;</span><br><span class="line">        private static readonly HMACSHA256 Secret = new HMACSHA256();</span><br><span class="line"></span><br><span class="line">        public static string GenerateToken(string claimA, string claimB, int expireMinutes = 30)</span><br><span class="line">        &#123;</span><br><span class="line">            var symmetricKey = Secret.Key;</span><br><span class="line">            var tokenHandler = new JwtSecurityTokenHandler();</span><br><span class="line">            var now = DateTime.UtcNow;</span><br><span class="line">            var tokenDescriptor = new SecurityTokenDescriptor</span><br><span class="line">            &#123;</span><br><span class="line">                Subject = new ClaimsIdentity(new[]</span><br><span class="line">                    &#123;</span><br><span class="line">                        new Claim(&quot;claimA&quot;, claimA),</span><br><span class="line">                        new Claim(&quot;claimB&quot;, claimB) </span><br><span class="line">                    &#125;),</span><br><span class="line"></span><br><span class="line">                Lifetime = new Lifetime(now, now.AddMinutes(expireMinutes)),</span><br><span class="line">                SigningCredentials = new SigningCredentials(</span><br><span class="line">                    new InMemorySymmetricSecurityKey(symmetricKey),                    </span><br><span class="line">                    SecurityAlgorithms.HmacSha256Signature,</span><br><span class="line">                    SecurityAlgorithms.Sha256Digest)</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            var securityToken = tokenHandler.CreateToken(tokenDescriptor);</span><br><span class="line">            var token = tokenHandler.WriteToken(securityToken);</span><br><span class="line"></span><br><span class="line">            return token;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public static string RefreshToken(string token, int expireMinutes = 30)</span><br><span class="line">        &#123;</span><br><span class="line">            var principal = GetPrincipal(token);</span><br><span class="line">            var identity = principal?.Identity as ClaimsIdentity;</span><br><span class="line"></span><br><span class="line">            var claimAId = identity?.FindFirst(&quot;claimA&quot;);</span><br><span class="line">            var claimBId = identity?.FindFirst(&quot;claimB&quot;);</span><br><span class="line">            var claimA = claimAId?.Value;</span><br><span class="line">            var claimB = claimBId?.Value;</span><br><span class="line"></span><br><span class="line">            if (string.IsNullOrEmpty(claimA) || string.IsNullOrEmpty(claimB))</span><br><span class="line">            &#123;</span><br><span class="line">                throw new Exception(&quot;Either claimA or claimB is null or empty.&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            return GenerateToken(claimA, claimB, expireMinutes);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public static ClaimsPrincipal GetPrincipal(string token)</span><br><span class="line">        &#123;</span><br><span class="line">            try</span><br><span class="line">            &#123;</span><br><span class="line">                var tokenHandler = new JwtSecurityTokenHandler();</span><br><span class="line">                var jwt = tokenHandler.ReadToken(token) as JwtSecurityToken;</span><br><span class="line"></span><br><span class="line">                if (jwt == null) return null;</span><br><span class="line"></span><br><span class="line">                // Check token expiration</span><br><span class="line">                if (DateTime.Compare(DateTime.UtcNow, jwt.ValidTo) &gt; 0) return null;                </span><br><span class="line"></span><br><span class="line">                var symmetricKey = Secret.Key;</span><br><span class="line">                var validationParameters = new TokenValidationParameters()</span><br><span class="line">                &#123;</span><br><span class="line">                    RequireExpirationTime = true,</span><br><span class="line">                    ValidateIssuer = false,</span><br><span class="line">                    ValidateAudience = false,</span><br><span class="line">                    IssuerSigningKey = new InMemorySymmetricSecurityKey(symmetricKey)</span><br><span class="line">                &#125;;</span><br><span class="line"></span><br><span class="line">                var principal = tokenHandler.ValidateToken(token, validationParameters, out _);</span><br><span class="line"></span><br><span class="line">                return principal;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            catch (Exception)</span><br><span class="line">            &#123;</span><br><span class="line">                return null;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="MVC-attribute-decorator"><a href="#MVC-attribute-decorator" class="headerlink" title="MVC attribute (decorator)"></a>MVC attribute (decorator)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">// add MVC attribute to guard the routes</span><br><span class="line">public class JwtAuthenticationAttribute: Attribute, IAuthenticationFilter</span><br><span class="line">    &#123;</span><br><span class="line">        public string Realm &#123; get; set; &#125;</span><br><span class="line">        public bool AllowMultiple =&gt; false;</span><br><span class="line"></span><br><span class="line">        public async Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)</span><br><span class="line">        &#123;</span><br><span class="line">            var request = context.Request;</span><br><span class="line">            var authorization = request.Headers.Authorization;</span><br><span class="line"></span><br><span class="line">            if (authorization == null || </span><br><span class="line">                string.IsNullOrEmpty(authorization.Parameter) ||</span><br><span class="line">                !authorization.Scheme.Equals(&quot;bearer&quot;, StringComparison.OrdinalIgnoreCase))</span><br><span class="line">            &#123;</span><br><span class="line">                context.ErrorResult = new AuthenticationFailureResult(&quot;Missing Jwt Token&quot;, request);</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            var token = authorization.Parameter;</span><br><span class="line">            var principal = await AuthenticateJwtToken(token);</span><br><span class="line"></span><br><span class="line">            if (principal == null)</span><br><span class="line">                context.ErrorResult = new AuthenticationFailureResult(&quot;Invalid token&quot;, request);</span><br><span class="line">            else</span><br><span class="line">                context.Principal = principal;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        protected Task&lt;IPrincipal&gt; AuthenticateJwtToken(string token)</span><br><span class="line">        &#123;</span><br><span class="line">            if (ValidateToken(token, out var claimA, out var claimB))</span><br><span class="line">            &#123;</span><br><span class="line">                var claims = new List&lt;Claim&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    new Claim(&quot;claimA&quot;, claimA),</span><br><span class="line">                    new Claim(&quot;claimB&quot;, claimB) </span><br><span class="line">                    // Add more claims if needed</span><br><span class="line">                &#125;;</span><br><span class="line">                var identity = new ClaimsIdentity(claims, &quot;Jwt&quot;);</span><br><span class="line">                IPrincipal user = new ClaimsPrincipal(identity);</span><br><span class="line">                return Task.FromResult(user);                </span><br><span class="line">            &#125;</span><br><span class="line">            return Task.FromResult&lt;IPrincipal&gt;(null);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private static bool ValidateToken(string token, out string claimA, out string claimB)</span><br><span class="line">        &#123;</span><br><span class="line">            claimA = null;</span><br><span class="line">            claimB = null;</span><br><span class="line"></span><br><span class="line">            var simplePrinciple = JwtManager.GetPrincipal(token);</span><br><span class="line">            var identity = simplePrinciple?.Identity as ClaimsIdentity;</span><br><span class="line"></span><br><span class="line">            if (identity == null) return false;</span><br><span class="line">            if (!identity.IsAuthenticated) return false;</span><br><span class="line"></span><br><span class="line">            var claimAId = identity.FindFirst(&quot;claimA&quot;);</span><br><span class="line">            var claimBId = identity.FindFirst(&quot;claimB&quot;);</span><br><span class="line">            claimA = claimAId?.Value;</span><br><span class="line">            claimB = claimBId?.Value;</span><br><span class="line"></span><br><span class="line">            if (string.IsNullOrEmpty(claimA) || string.IsNullOrEmpty(claimB)) return false;            </span><br><span class="line">            // Put more validation here if needed</span><br><span class="line">            </span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)</span><br><span class="line">        &#123;</span><br><span class="line">            Challenge(context);</span><br><span class="line">            return Task.FromResult(0);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private void Challenge(HttpAuthenticationChallengeContext context)</span><br><span class="line">        &#123;</span><br><span class="line">            string parameter = null;</span><br><span class="line"></span><br><span class="line">            if (!string.IsNullOrEmpty(Realm))</span><br><span class="line">            &#123;</span><br><span class="line">                parameter = &quot;realm=\&quot;&quot; + Realm + &quot;\&quot;&quot;;</span><br><span class="line">            &#125;</span><br><span class="line">            context.ChallengeWith(&quot;Bearer&quot;, parameter);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="stack-overflow-question-make-sure-you-go-thru-the-comments"><a href="#stack-overflow-question-make-sure-you-go-thru-the-comments" class="headerlink" title="stack overflow question (make sure you go thru the comments)"></a><a href="https://stackoverflow.com/questions/40281050/jwt-authentication-for-asp-net-web-api" target="_blank" rel="noopener">stack overflow question</a> (make sure you go thru the comments)</h4><h4 id="more-resources"><a href="#more-resources" class="headerlink" title="more resources:"></a>more resources:</h4><ul>
+<li><a href="https://blog.angular-university.io/angular-jwt-authentication/" target="_blank" rel="noopener">JWT with angular</a></li>
+<li><a href="https://blog.angular-university.io/angular-jwt/" target="_blank" rel="noopener">Good explanation</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/work/" rel="tag"># work</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/05/design/Software-Architectural-Design/" rel="next" title="Software Architectural Design">
+                <i class="fa fa-chevron-left"></i> Software Architectural Design
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/05/knowledge/Amazon-Onsite-面经/" rel="prev" title="Amazon Onsite 面经">
+                Amazon Onsite 面经 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Terence Chen</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Explain-JWT-like-I’m-five"><span class="nav-number">1.</span> <span class="nav-text">Explain JWT like I’m five</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Scenario-1-Not-JWT"><span class="nav-number">1.0.1.</span> <span class="nav-text">Scenario 1: (Not JWT)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scenario-2-JWT"><span class="nav-number">1.0.2.</span> <span class="nav-text">Scenario 2: (JWT)</span></a></li></ol></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#backend-C-implementation"><span class="nav-number">2.</span> <span class="nav-text">backend C#　implementation:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Static-jwt-manager"><span class="nav-number">2.0.1.</span> <span class="nav-text">Static jwt manager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVC-attribute-decorator"><span class="nav-number">2.0.2.</span> <span class="nav-text">MVC attribute (decorator)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#stack-overflow-question-make-sure-you-go-thru-the-comments"><span class="nav-number">2.0.2.1.</span> <span class="nav-text">stack overflow question (make sure you go thru the comments)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#more-resources"><span class="nav-number">2.0.2.2.</span> <span class="nav-text">more resources:</span></a></li></ol></li></ol></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Terence Chen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="Symbols count total"></span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
